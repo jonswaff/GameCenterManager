@@ -1,0 +1,295 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>GameCenter Manager by iRareMedia</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>GameCenter Manager</h1>
+        <p>GameCenter Manager for iOS Objective-C Apps helps you manage GameCenter. It makes it easy to report and keep track of high scores achievements, and challenges for different players.</p>
+
+        <p class="view"><a href="https://github.com/iRareMedia/GameCenterManager">View the Project on GitHub <small>iRareMedia/GameCenterManager</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/iRareMedia/GameCenterManager/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/iRareMedia/GameCenterManager/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/iRareMedia/GameCenterManager">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="game-center-manager" class="anchor" href="#game-center-manager"><span class="octicon octicon-link"></span></a>Game Center Manager</h1>
+
+<p>Game Center Manager helps you manage Game Center. It makes it easy to report and keep track of high scores achievements, and challenges for different players. Game Center Manager also takes care of the heavy lifting - checking internet availability, saving data when offline and uploading it when online, etc.</p>
+
+<p><img width="750" src="https://github.com/iRareMedia/GameCenterManager/blob/master/Interface.png?raw=true"></p>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Scores and achievements saved if no internet connection is available or an error occurred while reporting to Game Center. Scores and achievements are uploaded again when Game Center is available.</li>
+<li>Synchronization of Game Center data on first run</li>
+<li>Encryption of Game Center data</li>
+<li>Simple methods for uploading and retrieveing data</li>
+<li>Delegate methods</li>
+<li>Easy to use and setup</li>
+</ul><h2>
+<a name="setup" class="anchor" href="#setup"><span class="octicon octicon-link"></span></a>Setup</h2>
+
+<ol>
+<li>Add the <code>GameKit</code> and <code>SystemConfiguration</code> frameworks to your Xcode project<br>
+</li>
+<li>Add the following classes (can be found in the <em>GC Manager</em> folder) to your Xcode project (make sure to select Copy Items in the dialog):<br><ul>
+<li> GameCenterManager<br>
+</li>
+<li> Reachability </li>
+<li> NSDataAES256<br>
+</li>
+</ul>
+</li>
+<li>Open the <code>GameCenterManager.h</code> file and change the <code>kGameCenterManagerKey</code> constant to the secret key you want to use for encryption/decryption<br>
+</li>
+<li>Import the <code>GameCenterManager.h</code> file<br>
+</li>
+<li>
+<p>Add the delegate <code>GameCenterManagerDelegate</code> to your header file, then set the delegate in your implementation and add any delegates you'd like to use (see <strong>Delegates</strong>):</p>
+
+<pre><code>[[GameCenterManager sharedManager] setDelegate:self];
+</code></pre>
+</li>
+</ol><h2>
+<a name="using-the-demo-app" class="anchor" href="#using-the-demo-app"><span class="octicon octicon-link"></span></a>Using the Demo App</h2>
+
+<p>Game Center Manager's demo app makes it easier to test Game Center integration and how it works with Game Center Manager. It also lays out how to use the <code>GameCenterManager</code> class. To get the most out of the Game Center Manager demo app you'll need to connect it to your an app which you have setup in iTunes Connect. You can read about setting up and developing with Game Center from <a href="https://developer.apple.com/library/ios/#documentation/NetworkingInternet/Conceptual/GameKit_Guide/GameCenterOverview/GameCenterOverview.html#//apple_ref/doc/uid/TP40008304-CH5-SW7">Apple's Developer Documentation</a> and you can also follow these steps to connect the GC Manager demo with your current app.</p>
+
+<ol>
+<li>First, check and make sure your app is setup in <strong>iTunes Connect</strong> and that Game Center is enabled<br>
+</li>
+<li>In the GC Manager Demo app, change the <strong>Bundle ID</strong> to the same ID of the app which is setup in iTunes Connect<br>
+</li>
+<li>Go to the GC Manager Project Build Settings and change the <strong>Code Signing Identity</strong> to match the provisioning profile of your app<br>
+</li>
+<li>Customize the achievement and scoreboard submission IDs in the ViewController.m to actual values from your app<br>
+</li>
+<li>Run the GC Manager Demo in the Game Center Sandbox - if everything is properly setup and you're signed into the GC Sandbox then it should run properly and submit achievements and leaderboards.</li>
+</ol><p>If you find any issues with this process, please file an <a href="https://github.com/iRareMedia/GameCenterManager/issues/new">issue</a> so we can fix it or update the instructions.</p>
+
+<h2>
+<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h2>
+
+<h3>
+<a name="initialize-gamecentermanager" class="anchor" href="#initialize-gamecentermanager"><span class="octicon octicon-link"></span></a>Initialize GameCenterManager</h3>
+
+<p>You should initialize GameCenterManager when your app is launched, preferably in the <code>application didFinishLaunchingWithOptions</code> method by calling</p>
+
+<pre><code>[[GameCenterManager sharedManager] initGameCenter];  
+</code></pre>
+
+<p>This checks if Game Center is supported in the current device, authenticates the player and synchronizes scores and achievements from Game Center if its being run for the first time.</p>
+
+<h3>
+<a name="check-game-center-support" class="anchor" href="#check-game-center-support"><span class="octicon octicon-link"></span></a>Check Game Center Support</h3>
+
+<p>Check for Game Center availability:</p>
+
+<pre><code>[[GameCenterManager sharedManager] checkGameCenterAvailability];  
+</code></pre>
+
+<h3>
+<a name="report-score" class="anchor" href="#report-score"><span class="octicon octicon-link"></span></a>Report Score</h3>
+
+<p>Report a score to Game Center:</p>
+
+<pre><code>[[GameCenterManager sharedManager] saveAndReportScore:1000 leaderboard:@"Leaderboard Name"];  
+</code></pre>
+
+<p>This method saves the score locally as well. If GameCenter is not available, the scores will be saved locally and uploaded to Game Center the next time your app or game can connect to Game Center.</p>
+
+<h3>
+<a name="report-achievement" class="anchor" href="#report-achievement"><span class="octicon octicon-link"></span></a>Report Achievement</h3>
+
+<p>Report an achievement to Game Center:</p>
+
+<pre><code>[[GameCenterManager sharedManager] saveAndReportAchievement:@"1000Points" percentComplete:50];  
+</code></pre>
+
+<p>This method saves the achievement progress locally as well. If GameCenter is not available, the achievement will be saved locally and uploaded to Game Center the next time your app or game can connect to Game Center.</p>
+
+<h3>
+<a name="get-high-scores" class="anchor" href="#get-high-scores"><span class="octicon octicon-link"></span></a>Get High Scores</h3>
+
+<p>Get the high scores for the current player:</p>
+
+<pre><code>//Array of leaderboard ID's to get high scores for
+NSArray *leaderboardIDs = [NSArray arrayWithObjects:@"Leaderboard1", @"Leaderboard2", nil];
+
+//Returns a dictionary with leaderboard ID's as keys and high scores as values
+[[GameCenterManager sharedManager] highScoreForLeaderboards:leaderboardIDs];  
+</code></pre>
+
+<h3>
+<a name="get-achievement-progress" class="anchor" href="#get-achievement-progress"><span class="octicon octicon-link"></span></a>Get Achievement Progress</h3>
+
+<p>To get achievement progress for the current player, you can call</p>
+
+<pre><code>//Array of achievement ID's to get progress for
+NSArray *achievementIDs = [NSArray arrayWithObjects:@"Achievement1", @"Achievement2", nil];
+
+//Returns a dictionary with achievement ID's as keys and progress as values
+[[GameCenterManager sharedManager] progressForAchievements:achievementIDs];  
+</code></pre>
+
+<h3>
+<a name="get-challenges" class="anchor" href="#get-challenges"><span class="octicon octicon-link"></span></a>Get Challenges</h3>
+
+<p>To get challenges for the current game and player, you can call</p>
+
+<pre><code>//Returns an array with challenges. If there is an error retrieving the challenges, an array containing the error is returned. Returns `nil` if it was unable to connect to GameCenter.
+NSArray *challenges = [[GameCenterManager sharedManager] getChallenges]; 
+</code></pre>
+
+<h2>
+<a name="delegates" class="anchor" href="#delegates"><span class="octicon octicon-link"></span></a>Delegates</h2>
+
+<table>
+<tr><th colspan="2">Required Delegate Methods</th></tr>
+<tr>
+<td>Authenticate User</td>
+    <td> If the user is not logged into GameCenter, you'll need to present the GameCenter login view controller. This method is required because the user must be logged in for Game Center to work. If the user does not login, an error will be returned.  
+     <br><br><pre><code> - (void)gameCenterManager:(GameCenterManager *)manager authenticateUser:(UIViewController *)gameCenterLoginController</code></pre>
+</td>
+  </tr>
+<tr><th colspan="2">Optional Delegate Methods</th></tr>
+<tr>
+<td>Availability Changed</td>
+    <td>When the availability status of Game Center changes, this delegate method is called. The availability of GameCenter depends on multiple factors including: <br><ul>
+<li> Internet Connection</li>
+    <li> iOS Version (4.1+ required)</li>
+    <li> Player Authentication</li>
+    <li> Game Authentication</li>
+    </ul>
+<br>
+    The NSDictionary object, <tt>availabilityInformation</tt>, contains two objects, a <tt>message</tt> and a <tt>title</tt>. The `message` object is an NSString describing the availability issue. The <tt>title</tt> is a shorter description of the error; it is also an NSString.
+       <br><br><pre><code>- (void)gameCenterManager:(GameCenterManager *)manager availabilityChanged:(NSDictionary *)availabilityInformation</code></pre>
+</td>
+  </tr>
+<tr>
+<td>Game Center Error</td>
+    <td>When there is an error performing a Game Center task this delegate method is executed.
+  <br>
+    The <tt>error</tt> NSDictionary contains one NSError object, <tt>error</tt>.
+       <br><br><pre><code> - (void)gameCenterManager:(GameCenterManager *)manager error:(NSDictionary *)error</code></pre>
+</td>
+  </tr>
+<tr>
+<td>Reported Score</td>
+    <td>Called after the submitted score is successfully saved, uploaded, and posted to Game Center. 
+  <br>
+    The NSDictionary, <tt>scoreInformation</tt>, contains one NSError object, <tt>error</tt>, which may be nil if there is no error. It also contains a GKScore object, <tt>score</tt>, which contains information about the submitted score.
+       <br><br><pre><code>- (void)gameCenterManager:(GameCenterManager *)manager reportedScore:(NSDictionary *)scoreInformation</code></pre>
+</td>
+  </tr>
+<tr>
+<td>Saved Score</td>
+    <td>Called after the submitted score is successfully saved, but not posted or uploaded to Game Center. The saved score will be uploaded the next time GC Manager can successfully connect to Game Center. 
+  <br>
+    The GKScore object, <tt>score</tt> contains information about the submitted score.
+       <br><br><pre><code> - (void)gameCenterManager:(GameCenterManager *)manager savedScore:(GKScore *)score</code></pre>
+</td>
+  </tr>
+<tr>
+<td>Reported Achievement</td>
+    <td>Called after the submitted achievement and its percent complete is successfully saved, uploaded, and posted to Game Center. 
+  <br>
+    The NSDictionary, <tt>achievementInformation</tt>, contains one NSError object, <tt>error</tt>, which may be nil if there is no error. It also contains a GKAchievement object, <tt>achievement</tt>, which contains information about the submitted achievement.
+       <br><br><pre><code>- (void)gameCenterManager:(GameCenterManager *)manager reportedAchievement:(NSDictionary *)achievementInformation</code></pre>
+</td>
+  </tr>
+<tr>
+<td>Saved Achievement</td>
+    <td>Called after the submitted achievement is successfully saved, but not posted or uploaded to Game Center. The saved achievement and its percent completed will be uploaded the next time GC Manager can successfully connect to Game Center. 
+  <br>
+    The NSDictionary object, <tt>achievementInformation</tt> contains a double, <tt>percent complete</tt>, which is the percent completed on the specified and saved achievement. It also contains a GKAchievement object, <tt>achievement</tt>, which contains information about the submitted achievement.
+       <br><br><pre><code>- (void)gameCenterManager:(GameCenterManager *)manager savedAchievement:(NSDictionary *)achievementInformation</code></pre>
+</td>
+  </tr>
+<tr>
+<td>Reset All Achievements</td>
+    <td>When the <tt>resetAchievements</tt> method is called and resets all achievements successfully, this delegate method is fired. This method may be useful for updating user interface elements (ex. updating a table view listing completed achievements). Be warned though, the <tt>resetAchievements</tt> method does not prompt the user before resetting - you must do this on your own. 
+       <br><br><pre><code> - (void)gameCenterManager:(GameCenterManager *)manager resetAchievements:(NSError *)error</code></pre>
+</td>
+  </tr>
+</table><h2>
+<a name="changelog" class="anchor" href="#changelog"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<table>
+<tr><th colspan="2"><b>Version 4.0</b></th></tr>
+<tr>
+<td>This update makes massive improvements to the flow and performance of code, updates Objective-C compiler and build settings, redesigns the demo app, and adds three new methods and eight new delegate methods.   
+    <ul>
+<li>Removed <tt>NSNotifications</tt> and replaced with delegate methods. This makes integration with current projects easier and faster; it is also more reliable. See the <em>Delegates</em> section of this document for more.</li>
+    <li>Improved Game Center Availability Checking and Error Reporting. Now check for the availablity of Game Center with the <tt>checkGameCenterAvailability</tt> method. </li>
+   <li>Makes improvements to thread switching - now UI tasks are performed on the main thread. Previously they were performed on a background thread for GameCenter. </li>
+    <li>In depth error reporting for Game Center errors and availability issues.</li>
+    <li>The demo app has undergone massive improvements, including many interface improvements. To eliminate redundancy, the iPad part of the Demo App has been removed - Game Center Manager still works with iPad though. </li>
+    <li>Code cleanup and reorganization to make it easier on the eyes.</li>
+    <li>Upgrades ARMV6 assembler codegen from THUMB to ARM</li>
+    <ul></ul>
+</ul>
+</td>
+  </tr>
+</table><table>
+<tr><th colspan="2">Version 3.1</th></tr>
+<tr>
+<td>Improved error reporting and reorganized files to remove duplicates. Added a way to retrieve challenges. Converted old demo app files to support iOS 5+ - now using storyboards intead of XIB.</td>
+  </tr>
+<tr><th colspan="2"><b>Version 3.0</b></th></tr>
+<tr>
+<td>Added ARC compatibility. All files are now ready to be used with ARC. Many methods have been updated that were depreciated in iOS 6.0. The demo app has undergone massive improvements, including many interface improvements, iPhone 5 support, a new icon, and better GC status reporting. </td>
+  </tr>
+<tr><th colspan="2">Version 2.3</th></tr>
+<tr>
+<td>Fixed leaderboard synchronization bug where it would crash if user didn't submit a score previously.</td>
+  </tr>
+<tr><th colspan="2">Version 2.2</th></tr>
+<tr>
+<td>Fixed leaderboard synchronization bug where it would only sync the default leaderboard.</td>
+  </tr>
+<tr><th colspan="2">Version 2.1</th></tr>
+<tr>
+<td>Fixed NSNotification Bug</td>
+  </tr>
+<tr><th colspan="2"><b>Version 2.0</b></th></tr>
+<tr>
+<td>Added encryption, fixed synchronization bug and added comments and readme</td>
+  </tr>
+<tr><th colspan="2"><b>Version 1.0</b></th></tr>
+<tr>
+<td>Initial Commit</td>
+  </tr>
+</table><h2>
+<a name="attribution" class="anchor" href="#attribution"><span class="octicon octicon-link"></span></a>Attribution</h2>
+
+<p>Reachability Class from <a href="https://github.com/tonymillion/Reachability">https://github.com/tonymillion/Reachability</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/iRareMedia">iRareMedia</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
